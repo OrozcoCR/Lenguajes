@@ -34,6 +34,10 @@ func (l *listaProductos) agregarProducto(nombre string, cantidad int, precio int
 // modificar el código para que cuando se agregue un producto, si este ya se encuentra, incrementar la cantidad
 // de elementos del producto y eventualmente el precio si es que es diferente
 
+func elimSinExistencia(slice []producto, s int) []producto {
+	return append(slice[:s], slice[s+1:]...)
+}
+
 func (l *listaProductos) buscarProducto(nombre string) int { //el retorno es el índice del producto encontrado y -1 si no existe
 	var result = -1
 	var i int
@@ -52,6 +56,11 @@ func (l *listaProductos) venderProducto(nombre string, cant int) {
 			(*l)[prod].cantidad = (*l)[prod].cantidad - cant
 		} else {
 			fmt.Println("No se puede vayor cantidad de productos que los que hay en existencia")
+		}
+
+		if (*l)[prod].cantidad <= 0 {
+			fmt.Println("el producto ", (*l)[prod].nombre, " se elimino del sistema.")
+			(*l) = elimSinExistencia(*l, prod)
 		}
 
 		//modificar para que cuando no haya existencia de cantidad de productos, el producto se elimine de "la lista"
